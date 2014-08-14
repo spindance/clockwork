@@ -2,7 +2,7 @@ module Clockwork
   class Event
     attr_accessor :job, :last
 
-    def initialize(manager, period, job, block, options={})
+    def initialize(manager, period, job, block, options={}, user_options={})
       validate_if_option(options[:if])
       @manager = manager
       @period = period
@@ -13,6 +13,7 @@ module Clockwork
       @if = options[:if]
       @thread = options.fetch(:thread, @manager.config[:thread])
       @timezone = options.fetch(:tz, @manager.config[:tz])
+      @user_options = user_options
     end
 
     def convert_timezone(t)
@@ -51,7 +52,7 @@ module Clockwork
 
     private
     def execute
-      @block.call(@job, @last)
+      @block.call(@job, @last, @user_options)
     rescue => e
       @manager.log_error e
       @manager.handle_error e

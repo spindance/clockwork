@@ -38,8 +38,8 @@ module Clockwork
       Clockwork.manager.on(event, options, &block)
     end
 
-    def every(period, job, options={}, &block)
-      Clockwork.manager.every(period, job, options, &block)
+    def every(period, job, options={}, user_options={}, &block)
+      Clockwork.manager.every(period, job, options, user_options, &block)
     end
 
     def run
