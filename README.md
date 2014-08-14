@@ -309,6 +309,21 @@ Clockwork.every(1.day, 'run.me.in.new.thread', :thread => true)
 
 If a job is long-running or IO-intensive, this option helps keep the clock precise.
 
+Custom Job Options
+-----------------------
+
+You can specify a hash of custom job options which are passed to the handler.
+
+### Example:
+
+```ruby
+handler do |job, time, options|
+  puts "Running #{job} with custom options #{options}"
+end
+
+every(1.day, 'reminders.send', { :at => '01:30' }, { :via_sms => false })
+```
+
 Configuration
 -----------------------
 
