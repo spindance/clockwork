@@ -312,7 +312,8 @@ If a job is long-running or IO-intensive, this option helps keep the clock preci
 Custom Job Options
 -----------------------
 
-You can specify a hash of custom job options which are passed to the handler.
+You can specify a hash of custom job options which are passed to the handler. This is not currently
+possible with DB-backed events.
 
 ### Example:
 
