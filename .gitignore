@@ -2,3 +2,7 @@ pkg
 tmp
 /.bundle
 Gemfile.lock
+
+*.sublime*
+.ruby-version
+.ruby-gemset
