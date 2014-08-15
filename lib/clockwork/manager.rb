@@ -39,11 +39,11 @@ module Clockwork
       (@callbacks[event.to_sym]||=[]) << block
     end
 
-    def every(period, job, options={}, &block)
+    def every(period, job, options={}, user_options={}, &block)
       if options[:at].respond_to?(:each)
-        every_with_multiple_times(period, job, options, &block)
+        every_with_multiple_times(period, job, options, user_options, &block)
       else
-        register(period, job, block, options)
+        register(period, job, block, options, user_options)
       end
     end
 
@@ -90,17 +90,17 @@ module Clockwork
       @events.select{ |event| event.run_now?(t) }
     end
 
-    def register(period, job, block, options)
-      event = Event.new(self, period, job, block || handler, options)
+    def register(period, job, block, options, user_options)
+      event = Event.new(self, period, job, block || handler, options, user_options)
       @events << event
       event
     end
 
-    def every_with_multiple_times(period, job, options={}, &block)
+    def every_with_multiple_times(period, job, options={}, user_options={}, &block)
       each_options = options.clone
       options[:at].each do |at|
         each_options[:at] = at
-        register(period, job, block, each_options)
+        register(period, job, block, each_options, user_options)
       end
     end
   end

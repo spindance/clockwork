@@ -33,7 +33,7 @@ module Clockwork
 
       @model.all.each do |db_task|
         model_ids_that_exist << db_task.id
-        
+
         if !event_exists_for_task(db_task) || task_has_changed(db_task)
           recreate_event_for_database_task(db_task)
         end
@@ -57,8 +57,8 @@ module Clockwork
       def recreate_event_for_database_task(db_task)
         @events[db_task.id] = nil
 
-        options = { 
-          :from_database => true, 
+        options = {
+          :from_database => true,
           :db_task_id =>  db_task.id,
           :performer => self,
           :at => array_of_ats_for(db_task, :nil_if_empty => true)
@@ -141,7 +141,7 @@ module Clockwork
       (@events + events_from_database_as_array).select{|event| event.run_now?(t) }
     end
 
-    def register(period, job, block, options)
+    def register(period, job, block, options, user_options)
       Event.new(self, period, job, block || handler, options).tap do |e|
         if options[:from_database]
           options[:performer].add_event(e, options[:db_task_id])

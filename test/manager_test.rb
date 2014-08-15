@@ -106,6 +106,23 @@ class ManagerTest < Test::Unit::TestCase
     assert_equal now, received
   end
 
+  test "should pass user options to the general handler" do
+    received = nil
+    user_options = { :foo => 'bar' }
+    @manager.handler { |job, time, user_options| received = user_options }
+    @manager.every(1.minute, 'myjob', {}, user_options)
+    @manager.tick
+    assert_equal user_options, received
+  end
+
+  test "should pass user options to the event-specific handler" do
+    received = nil
+    user_options = { :foo => 'bar' }
+    @manager.every(1.minute, 'myjob', {}, user_options) { |job, time, user_options| received = user_options }
+    @manager.tick
+    assert_equal user_options, received
+  end
+
   test "exceptions are trapped and logged" do
     @manager.handler { raise 'boom' }
     @manager.every(1.minute, 'myjob')
